@@ -4,6 +4,9 @@
       "type": "appConfig",
       "connectionId": "AppConfig",
       "dynamicId": null
+    },
+    "apis1": {
+      "type": "apis"
     }
   }
 }

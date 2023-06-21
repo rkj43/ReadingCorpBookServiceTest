@@ -27,7 +27,11 @@ namespace ReadingCorp.Controllers
         [HttpPost("create")]
         public async Task<ActionResult<int>> CreateBook(Book book)
         {
-            //https://www.c-sharpcorner.com/blogs/date-and-time-format-in-c-sharp-programming1
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             book.RegistrationTimestamp = DateTime.Now.ToString("MM/dd/yyyy hh:mm tt");
             _context.Books.Add(book);
             await _context.SaveChangesAsync();
@@ -35,29 +39,42 @@ namespace ReadingCorp.Controllers
             return book.Id;
         }
 
+
         // PUT: api/book/{bookId}/update
         [HttpPut("{id}/update")]
-        public async Task<IActionResult> PutBook(int id, Book book)
+        public async Task<IActionResult> PutBook(int id, Book bookUpdateModel)
         {
-            if (id != book.Id)
+            if (bookUpdateModel == null)
             {
                 return BadRequest();
             }
 
-            var dbBook = _context.Books.Find(id);
+            var dbBook = await _context.Books.FindAsync(id);
 
             if (dbBook == null)
             {
                 return NotFound();
             }
 
-            // Update the properties
-            dbBook.Name = book.Name;
-            dbBook.Author = book.Author;
-            dbBook.Category = book.Category;
-            dbBook.Description = book.Description;
+            if (bookUpdateModel.Name != null)
+            {
+                dbBook.Name = bookUpdateModel.Name;
+            }
 
-            _context.Entry(dbBook).State = EntityState.Modified;
+            if (bookUpdateModel.Author != null)
+            {
+                dbBook.Author = bookUpdateModel.Author;
+            }
+
+            if (bookUpdateModel.Category != null)
+            {
+                dbBook.Category = bookUpdateModel.Category;
+            }
+
+            if (bookUpdateModel.Description != null)
+            {
+                dbBook.Description = bookUpdateModel.Description;
+            }
 
             try
             {
@@ -75,9 +92,10 @@ namespace ReadingCorp.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(dbBook); // returning the updated book back to the client
         }
 
+        // I've implemented two GET methods to make it easier to view Individual book/ books
         // GET: api/books/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<Book>> GetBook(int id)
@@ -99,7 +117,7 @@ namespace ReadingCorp.Controllers
                 .Select(b => new BookDTO { Id = b.Id, Name = b.Name, Category = b.Category })
                 .ToListAsync();
         }
-
+            
         private bool BookExists(int id)
         {
             return _context.Books.Any(e => e.Id == id);
