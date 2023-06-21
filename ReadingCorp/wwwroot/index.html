@@ -1,0 +1,145 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Service</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        h2 {
+            margin-top: 20px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        button[type="submit"] {
+            padding: 8px 16px;
+            font-size: 16px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #books {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .book-card {
+            flex-basis: 200px;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .book-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .book-id {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .book-category {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .book-description {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .book-timestamp {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Book Service</h1>
+
+    <h2>Create a new book</h2>
+    <form id="new-book-form">
+        <input type="text" id="name" placeholder="Name">
+        <input type="text" id="author" placeholder="Author">
+        <label for="category">Category:</label><br>
+        <select id="category">
+            <option value="">Select a category</option>
+            <option value="thriller">Thriller</option>
+            <option value="history">History</option>
+            <option value="drama">Drama</option>
+            <option value="biography">Biography</option>
+        </select><br>
+        <input type="text" id="description" placeholder="Description">
+        <button type="submit">Create Book</button>
+    </form>
+
+    <h2>Update an existing book</h2>
+    <form id="update-book-form">
+        <label for="update-id">ID:</label><br>
+        <input type="number" id="update-id" required><br>
+
+        <label for="update-name">New Name:</label><br>
+        <input type="text" id="update-name"><br>
+
+        <label for="update-author">Author:</label><br>
+        <input type="text" id="update-author"><br>
+
+        <label for="update-category">Category:</label><br>
+        <select id="update-category">
+            <option value="">Select a category</option>
+            <option value="thriller">Thriller</option>
+            <option value="history">History</option>
+            <option value="drama">Drama</option>
+            <option value="biography">Biography</option>
+        </select><br>
+
+        <label for="update-description">Description:</label><br>
+        <input type="text" id="update-description"><br>
+
+        <input type="submit" value="Update Book">
+    </form>
+
+    <h2>Get a unique book</h2>
+    <form id="get-book-form">
+        <label for="get-id">ID:</label><br>
+        <input type="number" id="get-id" required><br>
+        <input type="submit" value="Get Book">
+    </form>
+    <div id="single-book"></div>
+
+    <h2>All Books</h2>
+    <button id="get-all-books">Get All Books</button>
+    <div id="books"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

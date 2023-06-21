@@ -1,0 +1,77 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "resourceGroupName": {
+      "type": "string",
+      "defaultValue": "cryptopredictor_group",
+      "metadata": {
+        "_parameterType": "resourceGroup",
+        "description": "Name of the resource group for the resource. It is recommended to put resources under same resource group for better tracking."
+      }
+    },
+    "resourceGroupLocation": {
+      "type": "string",
+      "defaultValue": "westeurope",
+      "metadata": {
+        "_parameterType": "location",
+        "description": "Location of the resource group. Resource groups could have different location than resources."
+      }
+    },
+    "resourceLocation": {
+      "type": "string",
+      "defaultValue": "[parameters('resourceGroupLocation')]",
+      "metadata": {
+        "_parameterType": "location",
+        "description": "Location of the resource. By default use resource group's location, unless the resource provider is not supported there."
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Resources/resourceGroups",
+      "name": "[parameters('resourceGroupName')]",
+      "location": "[parameters('resourceGroupLocation')]",
+      "apiVersion": "2019-10-01"
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "name": "[concat(parameters('resourceGroupName'), 'Deployment', uniqueString(concat('bookservice', subscription().subscriptionId)))]",
+      "resourceGroup": "[parameters('resourceGroupName')]",
+      "apiVersion": "2019-10-01",
+      "dependsOn": [
+        "[parameters('resourceGroupName')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": [
+            {
+              "type": "Microsoft.AppConfiguration/configurationStores",
+              "location": "[parameters('resourceLocation')]",
+              "properties": {},
+              "sku": {
+                "name": "free"
+              },
+              "systemData": {
+                "createdBy": "rahul.kuruppasseryjohny2@mail.dcu.ie",
+                "createdByType": "User",
+                "createdAt": "2023-06-21T11:53:51+01:00",
+                "lastModifiedBy": "rahul.kuruppasseryjohny2@mail.dcu.ie",
+                "lastModifiedByType": "User",
+                "lastModifiedAt": "2023-06-21T11:53:52+01:00"
+              },
+              "name": "BookService",
+              "apiVersion": "2022-05-01"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "_dependencyType": "appConfig.azure"
+  }
+}
